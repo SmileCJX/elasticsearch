@@ -3,8 +3,8 @@ package pers.caijx.elasticsearch.dto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "bank",type = "docs",shards = 1,replicas = 3)
-public class BankES {
+@Document(indexName = "book")
+public class Bank {
 
     // 主键自增长
     @Id
@@ -32,10 +32,10 @@ public class BankES {
 
     private String state;
 
-    public BankES() {
+    public Bank() {
     }
 
-    public BankES(Long id, String account_number, String balance, String firstname, String lastname, String age, String gender, String address, String employer, String email, String city, String state) {
+    public Bank(Long id, String account_number, String balance, String firstname, String lastname, String age, String gender, String address, String employer, String email, String city, String state) {
         this.id = id;
         this.account_number = account_number;
         this.balance = balance;
@@ -148,7 +148,7 @@ public class BankES {
 
     @Override
     public String toString() {
-        return "BankES{" +
+        return "Bank{" +
                 "id=" + id +
                 ", account_number='" + account_number + '\'' +
                 ", balance='" + balance + '\'' +

@@ -1,7 +1,7 @@
 package pers.caijx.elasticsearch.repository;
 
-import org.springframework.data.elasticsearch.repository.ElasticsearchCrudRepository;
-import pers.caijx.elasticsearch.dto.BankES;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import pers.caijx.elasticsearch.dto.Bank;
 
-public interface BankESRepository extends ElasticsearchCrudRepository<BankES,Long> {
+public interface BankESRepository extends ElasticsearchRepository<Bank,Long> {
 }
