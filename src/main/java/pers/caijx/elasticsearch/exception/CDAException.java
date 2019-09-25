@@ -6,11 +6,11 @@ import pers.caijx.elasticsearch.enums.ResultEnum;
  * Spring只对RuntimeException进行事务回滚，对于Exception不进行事务回滚
  * Created by caijx on 2018/7/3/003.
  */
-public class PatientException extends RuntimeException{
+public class CDAException extends RuntimeException{
 
     private Integer code;
 
-    public PatientException(ResultEnum resultEnum) {
+    public CDAException(ResultEnum resultEnum) {
         super(resultEnum.getMsg());
         this.code = resultEnum.getCode();
     }
