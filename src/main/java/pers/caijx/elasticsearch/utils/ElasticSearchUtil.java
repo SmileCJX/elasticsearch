@@ -19,10 +19,10 @@ public class ElasticSearchUtil {
         XContentBuilder xContentBuilder = null;
         try {
             xContentBuilder = XContentFactory.jsonBuilder().startObject()
-                    .field("author", "张铭")
-                    .field("title", "Swift从入门到入土")
-                    .field("word_count", "5000")
-                    .field("publish_date","2007-08-23")
+                    .field("author", novel.getAuthor())
+                    .field("title", novel.getTitle())
+                    .field("word_count", novel.getWordCount())
+                    .field("publish_date",novel.getPublishDate())
                     .endObject();
         } catch (IOException e) {
             e.printStackTrace();
