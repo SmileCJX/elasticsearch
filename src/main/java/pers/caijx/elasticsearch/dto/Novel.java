@@ -1,9 +1,5 @@
 package pers.caijx.elasticsearch.dto;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 
 /**
