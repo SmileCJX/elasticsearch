@@ -1,6 +1,7 @@
 package pers.caijx.elasticsearch.controller;
 
 import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentBuilder;
@@ -30,13 +31,30 @@ public class NovelController {
     private TransportClient transportClient;
 
     /**
+     * 获取文章
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "/novels/{id}")
+    public String getNovelsById(@PathVariable String id) throws Exception{
+        if (null == id
+                || 0 == id.length()) {
+            throw new CDAException(ResultEnum.UNKNOW_ERROR);
+        }
+        GetResponse response = transportClient.prepareGet(ESConstant.DATA_INDEX_NAME,ESConstant.DATA_INDEX_TYPE,id).get();
+//        System.out.println(response);
+        return response.getSourceAsString();
+    }
+
+    /**
      * 添加文章
      * @param novel
      * @param request
      * @param response
      * @throws Exception
      */
-    @GetMapping(value =  "/novels")
+    @PostMapping(value =  "/novels")
     public JSONResult createNovels(@ModelAttribute("novel") Novel novel, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (null != novel
                 && null == novel.getId()) {
