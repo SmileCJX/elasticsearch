@@ -1,5 +1,6 @@
 package pers.caijx.elasticsearch.dto;
 
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
@@ -12,10 +13,8 @@ import java.io.Serializable;
  * @Date 2019/9/27
  * @Version V1.0
  **/
-@Document(indexName = "book",type = "novel")
 public class Novel implements Serializable {
 
-    @Id
     private Integer id;
 
     private String author;
@@ -25,4 +24,55 @@ public class Novel implements Serializable {
     private String wordCount;
 
     private String publishDate;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getWordCount() {
+        return wordCount;
+    }
+
+    public void setWordCount(String wordCount) {
+        this.wordCount = wordCount;
+    }
+
+    public String getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(String publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Novel{" +
+                "id=" + id +
+                ", author='" + author + '\'' +
+                ", title='" + title + '\'' +
+                ", wordCount='" + wordCount + '\'' +
+                ", publishDate='" + publishDate + '\'' +
+                '}';
+    }
 }
