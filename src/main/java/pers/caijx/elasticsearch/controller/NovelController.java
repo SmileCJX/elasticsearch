@@ -32,8 +32,8 @@ public class NovelController {
     @Autowired
     private TransportClient transportClient;
 
-    @GetMapping(value =  "/addTest")
-    public void addTest(@ModelAttribute("novel") Novel novel, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @GetMapping(value =  "/novels")
+    public void createNovels(@ModelAttribute("novel") Novel novel, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (null != novel
                 && null == novel.getId()) {
             throw new CDAException(ResultEnum.UNKNOW_ERROR);
