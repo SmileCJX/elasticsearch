@@ -16,6 +16,7 @@ import pers.caijx.elasticsearch.utils.ElasticSearchUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @ClassName NovelController
@@ -69,7 +70,7 @@ public class NovelController {
     }
 
     /**
-     * 通过id删除文档
+     * 通过id删除文章
      * @param id
      * @return
      */
@@ -83,6 +84,27 @@ public class NovelController {
                                             .prepareDelete(ESConstant.DATA_INDEX_NAME,ESConstant.DATA_INDEX_TYPE,id)
                                             .get();
         System.out.println(deleteResponse.status());
+        return JSONResult.ok();
+    }
+
+    /**
+     * 通过id更新文章
+     * @param id
+     * @param novel
+     * @return
+     * @throws IOException
+     */
+    @PutMapping(value = "/novels/{id}")
+    public JSONResult updateNovels(@PathVariable("id") String id, @ModelAttribute Novel novel) throws IOException {
+        if (null == id
+                || 0 == id.length()) {
+            throw new CDAException(ResultEnum.UNKNOW_ERROR);
+        }
+        XContentBuilder builder = ElasticSearchUtil.getBuileder(novel);
+        transportClient.prepareUpdate(ESConstant.DATA_INDEX_NAME,ESConstant.DATA_INDEX_TYPE,id)
+                                        .setDoc(builder.startObject()
+                                                .field("author",novel.getAuthor()).endObject())
+                                        .get();
         return JSONResult.ok();
     }
 
