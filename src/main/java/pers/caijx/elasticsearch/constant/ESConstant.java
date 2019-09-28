@@ -12,4 +12,8 @@ public class ESConstant {
     public static final String DATA_INDEX_NAME = "book";
 
     public static final String DATA_INDEX_TYPE = "novel";
+
+    public static final String CDA_INDEX_NAME = "cda";
+
+    public static final String CDA_INDEX_TYPE = "cdadoc";
 }
