@@ -1,5 +1,6 @@
 package pers.caijx.elasticsearch.controller;
 
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -8,10 +9,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.caijx.elasticsearch.constant.ESConstant;
 import pers.caijx.elasticsearch.domain.JSONResult;
 import pers.caijx.elasticsearch.dto.CDADoc;
@@ -60,6 +58,22 @@ public class CDADocController {
             response = transportClient.prepareSearchScroll(response.getScrollId()).setScroll(new TimeValue(30000)).execute().actionGet();
         } while (response.getHits().getHits().length != 0);
         return JSONResult.ok(ids.toString());
+    }
+
+    /**
+     * 获取CDA
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "/cdas/{id}")
+    public String getCdasById(@PathVariable String id) throws Exception{
+        if (null == id
+                || 0 == id.length()) {
+            throw new CDAException(ResultEnum.UNKNOW_ERROR);
+        }
+        GetResponse response = transportClient.prepareGet(ESConstant.CDA_INDEX_NAME,ESConstant.CDA_INDEX_TYPE,id).get();
+        return response.getSourceAsString();
     }
 
     /**
