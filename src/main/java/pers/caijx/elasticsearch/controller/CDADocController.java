@@ -1,9 +1,14 @@
 package pers.caijx.elasticsearch.controller;
 
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +22,8 @@ import pers.caijx.elasticsearch.utils.ElasticSearchUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName CDADocController
@@ -31,6 +38,38 @@ public class CDADocController {
     @Autowired
     private TransportClient transportClient;
 
+    /**
+     * 获取所有的共享文档id
+     * @return
+     */
+    @GetMapping(value = "/cdas")
+    public JSONResult getCdas() {
+        List<String> ids = new ArrayList<>();
+        SearchResponse response = transportClient.prepareSearch(ESConstant.CDA_INDEX_NAME)
+//                .addSort("content", SortOrder.ASC)
+                .setScroll(new TimeValue(3000))
+                .setSize(1000)
+                .get();  // 每次获取1000条就返回
+        do {
+            System.out.println("=====begin=====");
+            for (SearchHit hit : response.getHits().getHits()) {
+                ids.add(hit.getId());
+                System.out.println(hit.getSourceAsString());
+            }
+            System.out.println("=====end=====");
+            response = transportClient.prepareSearchScroll(response.getScrollId()).setScroll(new TimeValue(30000)).execute().actionGet();
+        } while (response.getHits().getHits().length != 0);
+        return JSONResult.ok(ids.toString());
+    }
+
+    /**
+     * 创建CDA
+     * @param cdaDoc
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value =  "/cdas")
     public JSONResult createCdas(@ModelAttribute("cdaDoc") CDADoc cdaDoc, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (null != cdaDoc
