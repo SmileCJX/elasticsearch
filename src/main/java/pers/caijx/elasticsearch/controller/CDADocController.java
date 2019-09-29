@@ -1,5 +1,6 @@
 package pers.caijx.elasticsearch.controller;
 
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -117,6 +118,24 @@ public class CDADocController {
                 .setDoc(builder.startObject()
                         .field("content",cdaDoc.getContent()).endObject())
                 .get();
+        return JSONResult.ok();
+    }
+
+    /**
+     * 通过id删除cda
+     * @param id
+     * @return
+     */
+    @DeleteMapping(value = "/cdas/{id}")
+    public JSONResult deleteCdasById(@PathVariable("id") String id) {
+        if (null == id
+                || id.length() == 0) {
+            throw new CDAException(ResultEnum.UNKNOW_ERROR);
+        }
+        DeleteResponse deleteResponse = transportClient
+                .prepareDelete(ESConstant.CDA_INDEX_NAME,ESConstant.CDA_INDEX_TYPE,id)
+                .get();
+        System.out.println(deleteResponse.status());
         return JSONResult.ok();
     }
 }
