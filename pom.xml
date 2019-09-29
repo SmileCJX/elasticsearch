@@ -64,7 +64,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
         </dependency>
+
+        <!-- GET请求会包含{}字符，因此我们舍弃Tomcat容器，显性指定改用jetty -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-jetty</artifactId>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
