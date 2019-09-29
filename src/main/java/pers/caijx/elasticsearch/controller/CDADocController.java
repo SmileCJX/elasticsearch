@@ -20,6 +20,7 @@ import pers.caijx.elasticsearch.utils.ElasticSearchUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +96,27 @@ public class CDADocController {
                 ESConstant.CDA_INDEX_TYPE, String.valueOf(cdaDoc.getId())).setSource(xContentBuilder).execute().get();
         // 文档不存在(CREATED) 存在更新(OK)
         System.out.println(indexResponse.status());
+        return JSONResult.ok();
+    }
+
+    /**
+     * 通过id更新cda
+     * @param id
+     * @param cdaDoc
+     * @return
+     * @throws IOException
+     */
+    @PutMapping(value = "/cdas/{id}")
+    public JSONResult updateCdas(@PathVariable("id") String id, @ModelAttribute CDADoc cdaDoc) throws IOException {
+        if (null == id
+                || 0 == id.length()) {
+            throw new CDAException(ResultEnum.UNKNOW_ERROR);
+        }
+        XContentBuilder builder = ElasticSearchUtil.getCDABuileder(cdaDoc);
+        transportClient.prepareUpdate(ESConstant.CDA_INDEX_NAME,ESConstant.CDA_INDEX_TYPE,id)
+                .setDoc(builder.startObject()
+                        .field("content",cdaDoc.getContent()).endObject())
+                .get();
         return JSONResult.ok();
     }
 }
