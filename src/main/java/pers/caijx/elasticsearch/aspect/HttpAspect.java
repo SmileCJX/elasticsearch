@@ -4,6 +4,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -20,7 +21,7 @@ public class HttpAspect {
     private final static Logger LOGGER = LoggerFactory.getLogger(HttpAspect.class);
 
     // TODO: 2019/9/29 面向切面的问题没有解决 
-    @Pointcut("execution(public * pers.caijx.elasticsearch.controller.CDADocController.*(..))")
+    @Pointcut("execution(* pers.caijx.elasticsearch.controller..*.*(..))")
     public void log() {
     }
 
