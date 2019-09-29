@@ -19,7 +19,8 @@ public class HttpAspect {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HttpAspect.class);
 
-    @Pointcut("execution(public * com.ylz.fhir.controller.PatientController.*(..))")
+    // TODO: 2019/9/29 面向切面的问题没有解决 
+    @Pointcut("execution(public * pers.caijx.elasticsearch.controller.CDADocController.*(..))")
     public void log() {
     }
 
