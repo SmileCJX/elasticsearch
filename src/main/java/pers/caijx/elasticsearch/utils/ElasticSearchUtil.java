@@ -3,6 +3,7 @@ package pers.caijx.elasticsearch.utils;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import pers.caijx.elasticsearch.dto.CDADoc;
+import pers.caijx.elasticsearch.dto.Fulltext;
 import pers.caijx.elasticsearch.dto.Novel;
 
 import java.io.IOException;
@@ -37,6 +38,18 @@ public class ElasticSearchUtil {
             xContentBuilder = XContentFactory.jsonBuilder().startObject()
                     .field("content", cdaDoc.getContent())
                     .field("publish_date",cdaDoc.getPublishDate())
+                    .endObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return xContentBuilder;
+    }
+
+    public static XContentBuilder getFulltextBuileder(Fulltext fulltext) {
+        XContentBuilder xContentBuilder = null;
+        try {
+            xContentBuilder = XContentFactory.jsonBuilder().startObject()
+                    .field("content", fulltext.getContent())
                     .endObject();
         } catch (IOException e) {
             e.printStackTrace();
